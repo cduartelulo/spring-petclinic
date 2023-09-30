@@ -37,6 +37,6 @@ workflows:
   dagger:
     jobs:
       - build
-      - deploy
-        requires:
-          - build
+      - deploy:
+          requires:
+            - build
