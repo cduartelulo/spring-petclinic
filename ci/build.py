@@ -1,25 +1,22 @@
 import sys
-import tempfile
 
 import anyio
 
 import dagger
 
 
-async def main(hostdir: str):
+async def main():
     async with dagger.Connection(dagger.Config(log_output=sys.stderr)) as client:
-        await (
+        out = await (
             client.container()
             .from_("alpine:latest")
-            .with_workdir("/tmp")
-            .with_exec(["wget", "https://dagger.io"])
-            .directory(".")
-            .export(hostdir)
+            .with_directory("/host", client.host().directory("."))
+            .with_exec(["/bin/sh", "-c", "`echo foo > /host/bar`"])
+            .directory("/host")
+            .export(".")
         )
 
-    contents = await anyio.Path(hostdir, "index.html").read_text()
+    print(out)
 
-    # print(contents)
 
-with tempfile.TemporaryDirectory() as hostdir:
-    anyio.run(main, hostdir)
+anyio.run(main)
