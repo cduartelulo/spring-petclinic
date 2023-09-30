@@ -26,16 +26,16 @@ async def main():
         source = client.host().directory(".", exclude=["ci", ".venv"])
 
         # create database service container
-        mariadb = (
-            client.container()
-            .from_("mariadb:10.11.2")
-            .with_env_variable("MARIADB_USER", "petclinic")
-            .with_env_variable("MARIADB_PASSWORD", "petclinic")
-            .with_env_variable("MARIADB_DATABASE", "petclinic")
-            .with_env_variable("MARIADB_ROOT_PASSWORD", "root")
-            .with_exposed_port(3306)
-            .with_exec([])
-        )
+        # mariadb = (
+        #     client.container()
+        #     .from_("mariadb:10.11.2")
+        #     .with_env_variable("MARIADB_USER", "petclinic")
+        #     .with_env_variable("MARIADB_PASSWORD", "petclinic")
+        #     .with_env_variable("MARIADB_DATABASE", "petclinic")
+        #     .with_env_variable("MARIADB_ROOT_PASSWORD", "root")
+        #     .with_exposed_port(3306)
+        #     .with_exec([])
+        # )
 
         # use maven:3.9 container
         # mount cache and source code volumes
@@ -52,31 +52,31 @@ async def main():
         # application and service containers
         # define JDBC URL for tests
         # test, build and package application as JAR
-        build = (
-            app.with_service_binding("db", mariadb)
-            .with_env_variable(
-                "MYSQL_URL",
-                "jdbc:mysql://0.0.0.0:3306/petclinic",
-            )
-            .with_exec(["gradle", "-Dspring.profiles.active=mysql", "clean", "build"])
-        )
+        # build = (
+        #     app.with_service_binding("db", mariadb)
+        #     .with_env_variable(
+        #         "MYSQL_URL",
+        #         "jdbc:mysql://0.0.0.0:3306/petclinic",
+        #     )
+        #     .with_exec(["gradle", "-Dspring.profiles.active=mysql", "clean", "build"])
+        # )
 
         # use eclipse alpine container as base
         # copy JAR files from builder
         # set entrypoint and database profile
-        deploy = (
-            client.container()
-            .from_("amazoncorretto:17.0.8")
-            .with_directory("/app", build.directory("./build/libs"))
-            .with_entrypoint(
-                [
-                    "java",
-                    "-jar",
-                    "-Dspring.profiles.active=mysql",
-                    "/app/spring-petclinic-3.1.0.jar",
-                ]
-            )
-        )
+        # deploy = (
+        #     client.container()
+        #     .from_("amazoncorretto:17.0.8")
+        #     .with_directory("/app", build.directory("./build/libs"))
+        #     .with_entrypoint(
+        #         [
+        #             "java",
+        #             "-jar",
+        #             "-Dspring.profiles.active=mysql",
+        #             "/app/spring-petclinic-3.1.0.jar",
+        #         ]
+        #     )
+        # )
         
 
         # # publish image to registry
@@ -87,7 +87,7 @@ async def main():
         # # print image address
         # print(f"Image published at: {address}")
 
-        version = await deploy.stdout()
+        version = await app.stdout()
 
 
 anyio.run(main)

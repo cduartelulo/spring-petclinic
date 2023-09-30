@@ -1,4 +1,14 @@
 version: 2.1
+
+commands:
+  install-dagger:
+    steps:
+      - run:
+          name: Install deps
+          command: pip install -r ./ci/requirements.txt
+      - run:
+          name: Install Dagger CLI
+          command: cd /usr/local && { curl -L https://dl.dagger.io/dagger/install.sh | sudo sh; cd -; }
 jobs:
   build:
     docker:
@@ -7,16 +17,24 @@ jobs:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
-      - run:
-          name: Install deps
-          command: pip install -r ./ci/requirements.txt
-      - run:
-          name: Install Dagger CLI
-          command: cd /usr/local && { curl -L https://dl.dagger.io/dagger/install.sh | sudo sh; cd -; }
+      - install-dagger
       - run:
           name: Run Dagger pipeline
-          command: dagger run --progress plain python ./ci/main.py
+          command: dagger run --progress plain python ./ci/build.py
+
+  deploy:
+    docker:
+      - image: cimg/python:3.11
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - install-dagger
+      - run:
+          name: Run Dagger pipeline
+          command: dagger run --progress plain python ./ci/deploy.py
 workflows:
   dagger:
     jobs:
       - build
+      - deploy
