@@ -9,11 +9,15 @@ import dagger
 async def main():
     # initialize Dagger client
     async with dagger.Connection(dagger.Config(log_output=sys.stderr)) as client:
-        
-        # get reference to source code directory
-        entries = await client.host().directory(".", exclude=["ci", ".venv"]).entries()
+        out = await (
+            client.container()
+            .from_("alpine:latest")
+            .with_directory("/host", client.host().directory("."))
+            .with_exec(["ls", "/host"])
+            .stdout()
+        )
 
-        print(entries)
+    print(out)
 
 
 anyio.run(main)
