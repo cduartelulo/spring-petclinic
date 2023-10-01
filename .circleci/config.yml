@@ -5,7 +5,7 @@ commands:
     steps:
       - run:
           name: Install deps
-          command: pip install -r ./ci/requirements.txt
+          command: pip install dagger-io
       - run:
           name: Install Dagger CLI
           command: cd /usr/local && { curl -L https://dl.dagger.io/dagger/install.sh | sudo sh; cd -; }
