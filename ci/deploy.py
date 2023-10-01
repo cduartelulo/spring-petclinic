@@ -12,7 +12,7 @@ async def main():
         out = await (
             client.container()
             .from_("alpine:latest")
-            .with_directory("/", client.host().directory("."))
+            .with_directory("/", client.host().directory("/home/circleci/project"))
             .with_exec(["ls", "."])
             .stdout()
         )
