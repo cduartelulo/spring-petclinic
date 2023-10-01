@@ -12,8 +12,8 @@ async def main():
         out = await (
             client.container()
             .from_("alpine:latest")
-            .with_directory("/tmp", client.host().directory("~/project/build"))
-            .with_exec(["ls", "."])
+            .with_directory("/host", client.host().directory("."))
+            .with_exec(["ls", "/host"])
             .stdout()
         )
 
