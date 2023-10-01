@@ -13,17 +13,14 @@ async def main():
         # get reference to source code directory
         source = client.host().directory(".", exclude=["ci", ".venv"])
         
-        app = (
+        app = await (
             client.container()
             .from_("gradle:7.6.2-jdk17")
             .with_mounted_cache("/root/.m2", maven_cache)
             .with_mounted_directory("/app", source)
             .with_workdir("/app")
-        )
-
-        await (
-            app.with_exec(["gradle", "clean", "build"])
-            .export("build/libs")
+            .with_exec(["gradle", "clean", "build"])
+            .export("~/build/libs")
         )
     
 
