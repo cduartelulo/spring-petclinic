@@ -22,9 +22,8 @@ jobs:
           name: Run Dagger pipeline
           command: dagger run --progress plain python ./ci/build.py
       - persist_to_workspace:
-          root: ~/
+          root: .
           paths:
-            - project
 
   deploy:
     docker:
@@ -35,7 +34,7 @@ jobs:
       - install-dagger
       - run:
           name: Run Dagger pipeline
-          command: dagger run --progress plain python /home/circleci/project/ci/deploy.py
+          command: dagger run --progress plain python ./ci/deploy.py
 workflows:
   dagger:
     jobs:
