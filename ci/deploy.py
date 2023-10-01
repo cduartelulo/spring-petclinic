@@ -13,7 +13,7 @@ async def main():
             client.container()
             .from_("alpine:latest")
             .with_directory("/host", client.host().directory("."))
-            .with_exec(["ls", "/host"])
+            .with_exec(["ls", "/host/build"])
             .stdout()
         )
 
