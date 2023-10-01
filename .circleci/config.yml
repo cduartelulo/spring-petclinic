@@ -22,7 +22,7 @@ jobs:
           name: Run Dagger pipeline
           command: dagger run --progress plain python ./ci/build.py
       - persist_to_workspace:
-          root: /app
+          root: ~/app
           paths:
             - "ci"
             - "build/libs"
@@ -34,7 +34,7 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - attach_workspace:
-          at: /app
+          at: ~/app
       - install-dagger
       - run:
           name: Run Dagger pipeline
