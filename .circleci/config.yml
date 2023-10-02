@@ -24,8 +24,7 @@ jobs:
       - persist_to_workspace:
           root: ~/project
           paths:
-            - "ci"
-            - "app"
+            - "*"
 
   deploy:
     docker:

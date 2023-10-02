@@ -24,7 +24,6 @@ async def main():
 
         build = (
             app
-            #.with_directory("/host/app", source)
             .with_exec(["gradle", "clean", "build"])            
         )
 
