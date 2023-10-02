@@ -1,7 +1,7 @@
 target/*
 bin/*
 build/*
-.gradle/*
+app/.gradle/*
 .settings/*
 .classpath
 .project

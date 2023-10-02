@@ -11,18 +11,30 @@ async def main():
         maven_cache = client.cache_volume("maven-cache")
 
         # get reference to source code directory
-        source = client.host().directory(".", exclude=["ci", ".venv"])
+        source = client.host().directory(".", include=["app"]).directory("app")
         
-        app = await (
-            client.container()
+        app = (
+            client
+            .container()
             .from_("gradle:7.6.2-jdk17")
             .with_mounted_cache("/root/.m2", maven_cache)
             .with_mounted_directory("/app", source)
             .with_workdir("/app")
-            .with_exec(["gradle", "clean", "build"])
-            .export("~/build/libs")
         )
-    
 
+        build = (
+            app
+            #.with_directory("/host/app", source)
+            .with_exec(["gradle", "clean", "build"])            
+        )
+
+        export = (
+            build
+            .directory(".")
+            .export("./host")
+        )
+
+        await export
+    
 
 anyio.run(main)
