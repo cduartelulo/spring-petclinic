@@ -6,22 +6,6 @@ import dagger
 
 import os
 
-from github import Auth
-from github import Github
-
-def get_github_commit():
-    auth = Auth.Token(os.environ.get('GITHUB_AUTH_TOKEN'))
-    g = Github(auth=auth)
-    repo = g.get_repo('cduartelulo/spring-petclinic')
-    commit = repo.get_git_commit(sha=os.environ.get('CIRCLE_SHA1'))
-
-    print('Commit message:', commit.message)
-
-    print('Committer date:', commit.committer.date)
-
-get_github_commit()
-
-
 async def main():
     async with dagger.Connection(dagger.Config(log_output=sys.stderr)) as client:
         # create a cache volume for Maven downloads

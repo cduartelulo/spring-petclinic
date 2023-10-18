@@ -10,6 +10,17 @@ commands:
           name: Install Dagger CLI
           command: cd /usr/local && { curl -L https://dl.dagger.io/dagger/install.sh | sudo sh; cd -; }
 jobs:
+  dod:
+    docker:
+      - image: cimg/python:3.11
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - dagger-install
+      - run:
+          name: Run Dagger pipeline
+          command: dagger run --progress plain python ./ci/dod.py
   build:
     docker:
       - image: cimg/python:3.11
@@ -41,7 +52,10 @@ jobs:
 workflows:
   dagger:
     jobs:
-      - build
+      - dod
+      - build:
+          requires:
+            - dod
       - deploy:
           requires:
             - build
