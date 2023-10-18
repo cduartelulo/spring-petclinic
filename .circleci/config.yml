@@ -19,7 +19,7 @@ jobs:
           docker_layer_caching: true
       - run:
           name: Install deps
-          command: pip install -r .ci/requirements-dod.txt
+          command: pip install -r ./ci/requirements-dod.txt
       - run:
           name: Run DoD validation
           command: python ./ci/dod.py
