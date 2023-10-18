@@ -17,10 +17,9 @@ jobs:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
-      - dagger-install
       - run:
-          name: Run Dagger pipeline
-          command: dagger run --progress plain python ./ci/dod.py
+          name: Run DoD validation
+          command: python ./ci/dod.py
   build:
     docker:
       - image: cimg/python:3.11
