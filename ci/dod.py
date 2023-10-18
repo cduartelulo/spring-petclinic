@@ -14,6 +14,8 @@ async def main():
     repo = g.get_repo('cduartelulo/spring-petclinic')
     commit = repo.get_git_commit(sha=os.environ.get('CIRCLE_SHA1'))
 
+    print('Hash commit:', commit.sha)
+
     print('Commit message:', commit.message)
 
     print('Committer date:', commit.committer.date)
