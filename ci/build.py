@@ -4,6 +4,8 @@ import anyio
 
 import dagger
 
+import os
+
 
 async def main():
     async with dagger.Connection(dagger.Config(log_output=sys.stderr)) as client:
@@ -37,3 +39,6 @@ async def main():
     
 
 anyio.run(main)
+
+for name, value in os.environ.items():
+    print("{0}: {1}".format(name, value))
