@@ -21,7 +21,7 @@ async def main():
     print('Committer date:', commit.committer.date)
 
 async def print_env_vars():
-    [print("Name:", name, "Value:", value) for name, value in os.environ.items]
+    [print("Name:", name, "Value:", value) for name, value in os.environ.items()]
 
 anyio.run(main)
 anyio.run(print_env_vars)
