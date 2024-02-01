@@ -20,11 +20,10 @@ jobs:
       #     docker_layer_caching: true
       - run: 
           name: Set commit message
-          command: |
-            GIT_COMMIT_DESC: git log --format=oneline -n 1 $CIRCLE_SHA1
-            echo $GIT_COMMIT_DESC            
-          # environment:
-          #   GIT_COMMIT_DESC: git log --format=oneline -n 1 $CIRCLE_SHA1          
+          command: echo 'export GIT_COMMIT_MSG="git log --format=oneline -n 1 $CIRCLE_SHA1" >> "$BASH_ENV'
+      - run: 
+          name: Get commit message
+          command: echo ${GIT_COMMIT_MSG}
       - run:
           name: Install deps
           command: pip install -r ./ci/requirements-dod.txt
