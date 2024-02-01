@@ -18,6 +18,11 @@ jobs:
       - checkout
       # - setup_remote_docker:
       #     docker_layer_caching: true
+      - run: 
+          name: Set commit message
+          environment:
+            GIT_COMMIT_DESC: git log --format=oneline -n 1 $CIRCLE_SHA1
+          command: echo $GIT_COMMIT_DESC
       - run:
           name: Install deps
           command: pip install -r ./ci/requirements-dod.txt

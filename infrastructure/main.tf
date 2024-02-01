@@ -11,6 +11,7 @@ resource "aws_instance" "spring-petclinic" {
 
     tags = {
       Name = "spring-petclinic-instance"
+      #CostCentre = "WTF Cost Centre"
     }
   
 }
