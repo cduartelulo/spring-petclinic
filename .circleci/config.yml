@@ -20,7 +20,7 @@ jobs:
       #     docker_layer_caching: true
       - run: 
           name: Set commit message
-          command: echo 'export GIT_COMMIT_MSG="git log --format=oneline -n 1 $CIRCLE_SHA1" >> "$BASH_ENV'
+          command: echo 'export GIT_COMMIT_MSG="git log --format=oneline -n 1 $CIRCLE_SHA1"' >> "$BASH_ENV"
       - run: 
           name: Get commit message
           command: echo ${GIT_COMMIT_MSG}
