@@ -62,7 +62,7 @@ jobs:
 workflows:
   dagger:
     jobs:
-      - dod
+      # - dod
       - build
       #     requires:
       #       - dod
